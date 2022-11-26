@@ -33,8 +33,7 @@ locals {
     volume_tag_value = "Testing"
 
     # Path to private ssh key used for the instances (locally)
-    ssh_key_file_path = "/root/keypair/blacree"
-    # ssh_key_file_path = "/home/ubuntu/blacree"
+    ssh_key_file_path = "/home/ubuntu/blacree"
 
     # Username used by the instance
     instance_username = "ubuntu"
