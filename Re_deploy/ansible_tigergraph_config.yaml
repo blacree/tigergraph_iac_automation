@@ -1,0 +1,55 @@
+- name: Tigergraph Configuration - Redeploy
+  hosts: all
+  gather_facts: false
+  remote_user: ubuntu
+  become: true
+
+  # Steps @ https://tigergraph.freshdesk.com/support/solutions/articles/5000870673-node-replacement-on-ec2-instances-with-0-downtime
+
+  tasks:
+
+  # Step 8: On the new machine mount the disk, create the tigergraph user, and restore data not contained on the disk
+
+  - name: Update repository
+    apt: update-cache=yes
+
+  - name: save values in $ID
+    shell: ID=$(sudo blkid | grep xvdf | cut -d \" -f 2)
+
+  - name: Echo info into fstab
+    shell: echo "UUID=$ID  /data  xfs  defaults,nofail  0  2" | sudo tee -a /etc/fstab
+
+  - name: Reload systemd manager configuration
+    shell: systemctl daemon-reload
+  
+  - name: Mount command
+    shell: mount -a
+  
+  - name: Create tigergraph user
+    user:
+      name: tigergraph
+      groups: sudo
+      home: /home/vibes
+      shell: /bin/bash
+      createhome: yes
+
+  - name: copy /data/backup/.ssh and /data/backup/.tg.cfg
+    become: yes
+    become_user: tigergraph
+    become_method: sudo
+    shell: cp -pr /data/backup/.ssh /home/tigergraph/ ; cp -p /data/backup/.tg.cfg /home/tigergraph/
+  
+  - name: copy /data/backup/.bashrc and /data/backup/98-tigergraph.conf
+    become: yes
+    become_user: tigergraph
+    become_method: sudo
+    shell: cp -p /data/backup/.bashrc /home/tigergraph/ ; cp -p /data/backup/98-tigergraph.conf /etc/security/limits.d/
+    
+
+  # Step 9: Start TigerGraph services 
+
+  - name: Run gadmin command as tigergraph user
+    become: yes
+    become_user: tigergraph
+    become_method: sudo
+    shell: gadmin start all

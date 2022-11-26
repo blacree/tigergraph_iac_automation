@@ -1,0 +1,6 @@
+Deploy/terraform.tfstate
+Deploy/terraform.tfstate.backup
+Deploy/.terraform/
+Re_deploy/terraform.tfstate
+Re_deploy/terraform.tfstate.backup
+Re_deploy/.terraform/

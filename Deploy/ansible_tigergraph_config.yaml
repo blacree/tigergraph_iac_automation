@@ -1,0 +1,129 @@
+- name: Tigergraph Configuration - Deploy
+  hosts: all
+  gather_facts: false
+  remote_user: ubuntu
+  become: true
+
+  # Steps @ https://tigergraph.freshdesk.com/support/solutions/articles/5000870673-node-replacement-on-ec2-instances-with-0-downtime
+
+  tasks:
+
+  # Step 2:  Mount the volume on each node
+
+  - name: Update repository
+    apt: update-cache=yes
+
+  - name: Make file system
+    shell: mkfs -t ext4 /dev/xvdf
+
+  - name: make /data directory
+    file:
+      path: /data
+      state: directory
+
+  - name: Mount filesystem to /data path
+    shell: mount /dev/xvdf /data
+  
+  - name: save values in $id
+    shell: ID=$(sudo blkid | grep xvdf | cut -d \" -f 2)
+
+  - name: Echo info into fstab
+    shell: echo "UUID=$ID  /data  xfs  defaults,nofail  0  2" | sudo tee -a /etc/fstab
+
+  - name: Reload systemd manager configuration
+    shell: systemctl daemon-reload
+  
+  - name: Unmount /data
+    shell: umount /data
+  
+  - name: Mount command
+    shell: mount -a
+
+  - name: Change permissions
+    shell: chmod 777 /data
+  
+
+  # Step 3: Download and install TigerGraph on the cluster
+
+  - name: make /data/tigergraph directory
+    file:
+      path: /data/tigergraph
+      state: directory
+  
+  - name: Download tigergraph locally
+    shell: wget -O tigergraph-3.1.6-offline.tar.gz https://dl.tigergraph.com/enterprise-edition/tigergraph-3.1.6-offline.tar.gz?
+    connection: local
+    become: false
+    run_once: true
+    delegate_to: 127.0.0.1
+  
+  - name: Copy tigergraph to each instance
+    copy:
+      src: ./tigergraph-3.1.6-offline.tar.gz
+      dest: /data/tigergraph-3.1.6-offline.tar.gz
+    
+  - name: Extract tigergraph
+    shell: tar -xvf tigergraph-3.1.6-offline.tar.gz
+    chdir: /data/
+
+  - name: Copy update_config.sh file to each instance
+    copy:
+      src: ./update_config.sh
+      dest: /data/tigergraph-3.1.6-offline/update_config.sh
+
+  - name: Update root dirs,ips, key file, relicas
+    shell: chmod u+x update_config.sh; ./update_config.sh
+    chdir: /data/tigergraph-3.1.6-offline/
+
+  - name: Install tigergraph
+    shell: install.sh -n
+    chdir: /data/tigergraph-3.1.6-offline/
+
+  - name: Run gsql command as tigergraph
+    become: yes
+    become_user: tigergraph
+    become_method: sudo
+    shell: gsql "create graph test()"
+  
+
+  # Step4: Backup required files to the EBS volume
+
+  - name: make /data/backup directory
+    file:
+      path: /data/backup
+      state: directory
+  
+  - name: Backup ~/.ssh/ directory
+    shell: cp -pr ~/.ssh/ /data/backup
+
+  - name: Backup ~/.tg.cfg
+    shell: cp -p ~/.tg.cfg /data/backup
+  
+  - name: Backup ~/.bashrc
+    shell: cp -p ~/.bashrc /data/backup
+  
+  - name: Backup /etc/security/limits.d/98-tigergraph.conf
+    shell: cp -p /etc/security/limits.d/98-tigergraph.conf /data/backup
+
+
+  # Step 5: Remove GPE_1_3 from ZooKeeper and stop GPE_1#3
+
+  - name: Export $JAVA_HOME
+    shell: export JAVA_HOME=$(dirname $(find $(gadmin config get System.AppRoot)/.syspre -name java))
+
+  - name: Add to $PATH
+    shell: export PATH=$PATH:$JAVA_HOME
+  
+  - name: gadmin config_1
+    shell: $(gadmin config get System.AppRoot)/zk/bin/zkCli.sh -server 127.0.0.1:19999 ls /tigergraph/dict/objects/__services/GPE/_runtime_nodes | tail -1
+
+  - name: gadmin_config_2
+    shell: $(gadmin config get System.AppRoot)/zk/bin/zkCli.sh -server 127.0.0.1:19999 deleteall /tigergraph/dict/objects/__services/GPE/_runtime_nodes/GPE_1_3
+  
+  - name: gadmin_config 3
+    shell: gadmin stop GPE_1#3 -y
+
+
+
+
+  
