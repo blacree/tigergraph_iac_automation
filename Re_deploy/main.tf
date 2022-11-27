@@ -24,19 +24,18 @@ locals {
     instance_type = "t2.micro"
     instance_tag_value = "Testing"
 
-    private_ip_1 = "172.31.19.111"
+    private_ip_1 = "172.31.26.32"
     private_ip_2 = ""
     private_ip_3 = ""
 
 
     # vars for ebs_volumes
-    ebs_volume_id_1 = "vol-05a0f62f37bd2b267"
+    ebs_volume_id_1 = "vol-00690f2f4b05ba65e"
     ebs_volume_id_2 = ""
     ebs_volume_id_3 = ""
 
     # Path to private ssh key used for the instances (locally)
-    # ssh_key_file_path = "/home/ubuntu/blacree"
-    ssh_key_file_path = "/root/keypair/blacree"
+    ssh_key_file_path = "/home/ubuntu/blacree"
 
     # Username used by the instance
     instance_username = "ubuntu"
