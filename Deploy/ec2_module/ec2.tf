@@ -7,7 +7,7 @@ variable instance_type {}
 variable instance_tag_name {}
 variable instance_tag_value {}
 
-variable "ebs_snapshot_id_1" {}
+# variable "ebs_snapshot_id_1" {}
 # variable "ebs_snapshot_id_2" {}
 # variable "ebs_snapshot_id_3" {}
 

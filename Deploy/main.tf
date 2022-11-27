@@ -61,7 +61,7 @@ module "ec2_module" {
     instance_type = local.instance_type
     instance_tag_name = local.instance_tag_name
     instance_tag_value = local.instance_tag_value
-    ebs_snapshot_id_1 = module.ebs_create_module.ebs_snapshot_id_1
+    # ebs_snapshot_id_1 = module.ebs_create_module.ebs_snapshot_id_1
     # ebs_snapshot_id_2 = module.ebs_create_module.ebs_snapshot_id_2
     # ebs_snapshot_id_3 = module.ebs_create_module.ebs_snapshot_id_3
 
@@ -124,9 +124,9 @@ output "ebs_volume_id_1"{
     value = module.ebs_create_module.ebs_volume_id_1
 }
 
-output "ebs_snapshot_id_1"{
-    value = module.ebs_create_module.ebs_snapshot_id_1
-}
+# output "ebs_snapshot_id_1"{
+#     value = module.ebs_create_module.ebs_snapshot_id_1
+# }
 
 # output "ebs_volume_id_2"{
 #     value = module.ebs_create_module.ebs_volume_id_2

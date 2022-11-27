@@ -55,9 +55,9 @@ output "ebs_volume_id_1" {
     value = aws_ebs_volume.ebs_volume_1.id
 }
 
-output "ebs_snapshot_id_1" {
-    value = aws_ebs_snapshot.snapshot_for_ebs_1.id
-}
+# output "ebs_snapshot_id_1" {
+#     value = aws_ebs_snapshot.snapshot_for_ebs_1.id
+# }
 
 # output "ebs_volume_id_2" {
 #     value = aws_ebs_volume.ebs_volume_2.id
