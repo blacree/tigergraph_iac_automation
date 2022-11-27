@@ -25,13 +25,13 @@ locals {
     instance_tag_name = "Name"
     instance_tag_value = "Testing"
 
-    private_ip_1 = ""
+    private_ip_1 = "172.31.19.111"
     private_ip_2 = ""
     private_ip_3 = ""
 
 
     # vars for ebs_volumes
-    ebs_volume_id_1 = ""
+    ebs_volume_id_1 = "vol-05a0f62f37bd2b267"
     ebs_volume_id_2 = ""
     ebs_volume_id_3 = ""
 
