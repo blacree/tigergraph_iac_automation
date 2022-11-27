@@ -14,7 +14,7 @@
     apt: update-cache=yes
 
   - name: save values in $ID
-    shell: ID=$(sudo blkid | grep xvdf | cut -d \" -f 2)
+    shell: ID=$(sudo blkid | grep xvdh | cut -d \" -f 2)
 
   - name: Echo info into fstab
     shell: echo "UUID=$ID  /data  xfs  defaults,nofail  0  2" | sudo tee -a /etc/fstab
