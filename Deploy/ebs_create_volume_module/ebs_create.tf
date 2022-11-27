@@ -16,9 +16,9 @@ resource "aws_ebs_volume" "ebs_volume_1" {
 }
 
 # Create snapshot for volume 1
-resource "aws_ebs_snapshot" "snapshot_for_ebs_1"{
-    volume_id = aws_ebs_volume.ebs_volume_1.id
-}
+# resource "aws_ebs_snapshot" "snapshot_for_ebs_1"{
+#     volume_id = aws_ebs_volume.ebs_volume_1.id
+# }
 
 
 # Ebs volume for second instance
