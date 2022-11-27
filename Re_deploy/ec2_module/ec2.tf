@@ -18,7 +18,7 @@ resource "aws_instance" "instance_1" {
     security_groups = [var.security_group_id]
     key_name = var.key_name
     instance_type = var.instance_type
-    associate_public_ip_address = true
+    # associate_public_ip_address = true
     private_ip = var.private_ip_1
 
     tags = {
@@ -26,48 +26,43 @@ resource "aws_instance" "instance_1" {
     }
 }
 
-# # Second instance
-# resource "aws_instance" "instance_2" {
-#     ami = var.image_id
-#     subnet_id = var.subnet_id
-#     security_groups = [var.security_group_id]
-#     key_name = var.key_name
-#     instance_type = var.instance_type
-#     # associate_public_ip_address = true
+# Second instance
+resource "aws_instance" "instance_2" {
+    ami = var.image_id
+    subnet_id = var.subnet_id
+    security_groups = [var.security_group_id]
+    key_name = var.key_name
+    instance_type = var.instance_type
+    # associate_public_ip_address = true
 
-#     tags = {
-#       "Name" = "${var.instance_tag_value}"
-#     }
-# }
+    tags = {
+      "Name" = "${var.instance_tag_value}"
+    }
+}
 
-# # Third instance
-# resource "aws_instance" "instance_3" {
-#     ami = var.image_id
-#     subnet_id = var.subnet_id
-#     security_groups = [var.security_group_id]
-#     key_name = var.key_name
-#     instance_type = var.instance_type
-#     # associate_public_ip_address = true
+# Third instance
+resource "aws_instance" "instance_3" {
+    ami = var.image_id
+    subnet_id = var.subnet_id
+    security_groups = [var.security_group_id]
+    key_name = var.key_name
+    instance_type = var.instance_type
+    # associate_public_ip_address = true
 
-#     tags = {
-#       "Name" = "${var.instance_tag_value}"
-#     }
-# }
+    tags = {
+      "Name" = "${var.instance_tag_value}"
+    }
+}
 
 
 output "instance_1_id"{
     value = aws_instance.instance_1.id
 }
 
-# output "public_ip_1"{
-#     value =aws_instance.instance_1.public_ip
-# }
+output "instance_2_id"{
+    value = aws_instance.instance_2.id
+}
 
-
-# output "instance_2_id"{
-#     value = aws_instance.instance_2.id
-# }
-
-# output "instance_3_id"{
-#     value = aws_instance.instance_3.id
-# }
+output "instance_3_id"{
+    value = aws_instance.instance_3.id
+}

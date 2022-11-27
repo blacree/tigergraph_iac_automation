@@ -1,7 +1,7 @@
 - name: Tigergraph Configuration - Redeploy
   hosts: all
   gather_facts: false
-  remote_user: ubuntu
+  remote_user: ec2-user
   become: true
 
   # Steps @ https://tigergraph.freshdesk.com/support/solutions/articles/5000870673-node-replacement-on-ec2-instances-with-0-downtime
@@ -35,29 +35,23 @@
       shell: /bin/bash
       createhome: yes
 
-  # - name: copy /data/backup/.ssh and /data/backup/.tg.cfg
-  #   become: yes
-  #   become_user: tigergraph
-  #   become_method: sudo
-  #   shell: cp -pr /data/backup/.ssh /home/tigergraph/ ; cp -p /data/backup/.tg.cfg /home/tigergraph/
+  - name: copy /data/backup/.ssh and /data/backup/.tg.cfg
+    become: yes
+    become_user: tigergraph
+    become_method: sudo
+    shell: cp -pr /data/backup/.ssh /home/tigergraph/ ; cp -p /data/backup/.tg.cfg /home/tigergraph/
   
-  # - name: copy /data/backup/.bashrc and /data/backup/98-tigergraph.conf
-  #   become: yes
-  #   become_user: tigergraph
-  #   become_method: sudo
-  #   shell: cp -p /data/backup/.bashrc /home/tigergraph/ ; cp -p /data/backup/98-tigergraph.conf /etc/security/limits.d/
+  - name: copy /data/backup/.bashrc and /data/backup/98-tigergraph.conf
+    become: yes
+    become_user: tigergraph
+    become_method: sudo
+    shell: cp -p /data/backup/.bashrc /home/tigergraph/ ; cp -p /data/backup/98-tigergraph.conf /etc/security/limits.d/
     
 
-  # Step 9: Start TigerGraph services 
-
-  # - name: Run gadmin command as tigergraph user
-  #   become: yes
-  #   become_user: tigergraph
-  #   become_method: sudo
-  #   shell: gadmin start all
+  Step 9: Start TigerGraph services 
 
   - name: Run gadmin command as tigergraph user
     become: yes
     become_user: tigergraph
     become_method: sudo
-    shell: whoami
+    shell: gadmin start all

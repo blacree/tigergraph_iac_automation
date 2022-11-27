@@ -1,0 +1,67 @@
+DEPLOY (folder) - Contains code for initial deployment
+RE_DEPLOY (folder) - Contains code for redeployment
+
+Prerequisites (Important config details that can be missed):
+Some configuration that can be missed before deployment:
+
+1. Input the correct user for your AMI. Depending on the type of ami used your possible users would be:
+
+For Amazon Linux 2 or the Amazon Linux AMI, the user name is ec2-user.
+
+For a CentOS AMI, the user name is centos or ec2-user.
+
+For a Debian AMI, the user name is admin.
+
+For a Fedora AMI, the user name is fedora or ec2-user.
+
+For a RHEL AMI, the user name is ec2-user or root.
+
+For a SUSE AMI, the user name is ec2-user or root.
+
+For an Ubuntu AMI, the user name is ubuntu.
+
+For an Oracle AMI, the user name is ec2-user.
+
+For a Bitnami AMI, the user name is bitnami.
+
+- Locations to configure your user:
+	i. Deploy/main.tf - "local.instance_username" variable
+	ii. Deploy/ansible_tigerpgraph_config.yaml - "remote_user" entry
+	iii. Re_deploy/main.tf - "local.instance_username" variable
+	iv. Re_deploy/ansible_tigerpgraph_config.yaml - "remote_user" entry
+	v. Deploy/update_config.sh - Input the username of your ami. DATA looks like: sed -i 's@sudoUserName@'"<username>"'@' install_conf.json
+
+2. Input the path and name of your ssh key file on your local computer (key file used to provision the instances)
+- Locations to configure key_file path:
+	i. Deploy/main.tf - "local.ssh_key_file_path" variable
+	ii. Deploy/ansible_tigergraph_config.yaml - "key_file_path" variable
+	iii. Deploy/ansible.cfg - "private_key_file" entry
+	iv. Re_deploy/main.tf - "local.ssh_key_file_path" variable
+	v. Re_deploy/ansible.cfg - "private_key_file" entry
+	vi. Deploy/update_config.sh = Input the name of your key file. DATA looks like: sed -i 's@/path/to/my_key.pem_rsa@'"/data/tigergraph/<name_of_key_file>"'@' install_conf.json
+
+- Locations to configure name of key file:
+	i. Deploy/ansible_tigergraph_config.yaml - "key_file_name" variable
+
+
+***VERY IMPORTANT VERY IMPORTANT VERY IMPORTANT VERY IMPORTANT VERY IMPORTANT***
+HOW TO DESTROY IAC FOR 'DEPLOY' - ONLY APPLIES TO DEPLOY:
+Before destroying, Remove the state information for your ebs volumes from your terraform.tfstate file. If you don't remove the state information for you EBS volume 
+it will get destroyed with everything else and you will loose all your data.
+- How to remove ebs volume state information:
+	i. list all the state info of your deployed infrastructure:
+		$ terraform state list
+	ii. Copy and remove each ebs_volume:
+		$ terraform state rm module.ebs_module.aws_ebs_volume.<name>
+You can then go ahead to destroy your infrastructure using "terraform destroy"
+
+
+
+
+
+
+
+
+
+
+

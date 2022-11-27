@@ -17,28 +17,28 @@ provider "aws" {
 
 locals {
     # vars for ec2_instances
-    subnet_id = "subnet-058f46e3fa57d3517"
-    image_id = "ami-08c40ec9ead489470"
-    security_group_id = "sg-0d38798cdf31d2df3"
-    key_name = "blacree"
-    instance_type = "t2.micro"
-    instance_tag_value = "Testing"
+    subnet_id = ""
+    image_id = ""
+    security_group_id = ""
+    key_name = ""
+    instance_type = ""
+    instance_tag_value = ""
 
-    private_ip_1 = "172.31.26.32"
+    private_ip_1 = ""
     private_ip_2 = ""
     private_ip_3 = ""
 
 
     # vars for ebs_volumes
-    ebs_volume_id_1 = "vol-00690f2f4b05ba65e"
+    ebs_volume_id_1 = ""
     ebs_volume_id_2 = ""
     ebs_volume_id_3 = ""
 
     # Path to private ssh key used for the instances (locally)
-    ssh_key_file_path = "/home/ubuntu/blacree"
+    ssh_key_file_path = ""
 
     # Username used by the instance
-    instance_username = "ubuntu"
+    instance_username = "ec2-user"
 
     # Ansible file name
     ansible_main_file = "ansible_tigergraph_config.yaml"
@@ -65,8 +65,8 @@ module "ec2_module" {
 module "ebs_module"{
     source = "./ebs_module"
     instance_1_id = module.ec2_module.instance_1_id
-    # instance_2_id = module.ec2_module.instance_2_id
-    # instance_3_id = module.ec2_module.instance_3_id
+    instance_2_id = module.ec2_module.instance_2_id
+    instance_3_id = module.ec2_module.instance_3_id
     volume_1_id = local.ebs_volume_id_1
     volume_2_id = local.ebs_volume_id_2
     volume_3_id = local.ebs_volume_id_3
@@ -92,8 +92,7 @@ resource "null_resource" "specific_configuration"{
 
     # Start main config
     provisioner "local-exec" {
-        # command = "ansible-playbook -i ${local.private_ip_1},${local.private_ip_2},${local.private_ip_3} ${local.ansible_main_file}"
-        command = "ansible-playbook -i ${local.private_ip_1}, ${local.ansible_main_file}"
+        command = "ansible-playbook -i ${local.private_ip_1},${local.private_ip_2},${local.private_ip_3} ${local.ansible_main_file}"
     }
 
     depends_on = [
@@ -105,10 +104,10 @@ output "instance_1_private_ip"{
     value = "Private IP_1: ${local.private_ip_1}"
 }
 
-# output "instance_2_private_ip"{
-#     value = "Private IP_2: ${module.ec2_module.private_ip_2}"
-# }
+output "instance_2_private_ip"{
+    value = "Private IP_2: ${local.private_ip_2}"
+}
 
-# output "instance_3_private_ip"{
-#     value = "Private IP_3: ${module.ec2_module.private_ip_3}"
-# }
+output "instance_3_private_ip"{
+    value = "Private IP_3: ${local.private_ip_3}"
+}

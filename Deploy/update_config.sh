@@ -7,7 +7,7 @@ m4=$(echo $secondary_host_ips | cut -d " " -f 3)
 
 sed -i 's@"m1: 127.0.0.1"@'"\"m1:$private_host_ip\",\"m2:$m2\",\"m3:$m3\",\"m4:$m4\""'@' install_conf.json
 sed -i 's@home@'"data"'@' install_conf.json
-sed -i 's@sudoUserName@'"ubuntu"'@' install_conf.json
+sed -i 's@sudoUserName@'"ec2-user"'@' install_conf.json
 sed -i 's@/path/to/my_key.pem_rsa@'"/data/tigergraph/tigergraph"'@' install_conf.json
 sed -i '/comment/d' install_conf.json
 sed -i 's/P\[or K\]/K/g' install_conf.json
