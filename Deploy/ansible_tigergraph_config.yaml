@@ -1,11 +1,12 @@
 - name: Tigergraph Configuration - Deploy
   hosts: all
   gather_facts: false
-  remote_user: ubuntu
+  remote_user: ec2-user
   become: true
 
   vars:
-    key_file_path: "/home/ubuntu/blacree"
+    key_file_path: ""
+    key_file_name: "tigergraph"
 
   # Steps @ https://tigergraph.freshdesk.com/support/solutions/articles/5000870673-node-replacement-on-ec2-instances-with-0-downtime
 
@@ -13,87 +14,89 @@
 
   # Step 2:  Mount the volume on each node
 
-  # - name: Update repository
-  #   apt: update-cache=yes
+  - name: Update repository
+    apt: update-cache=yes
 
-  # - name: Make file system
-  #   shell: mkfs -t xfs /dev/xvdh
+  - name: Make file system
+    shell: mkfs -t xfs /dev/xvdh
 
-  # - name: make /data directory
-  #   file:
-  #     path: /data
-  #     state: directory
+  - name: make /data directory
+    file:
+      path: /data
+      state: directory
 
-  # - name: Mount filesystem to /data path
-  #   shell: mount /dev/xvdh /data
+  - name: Mount filesystem to /data path
+    shell: mount /dev/xvdh /data
   
-  # - name: Save values in $id and Echo info into fstab
-  #   shell: ID=$(sudo blkid | grep xvdh | cut -d \" -f 2) ; echo "UUID=$ID  /data  xfs  defaults,nofail  0  2" | sudo tee -a /etc/fstab
+  - name: Save values in $id and Echo info into fstab
+    shell: ID=$(sudo blkid | grep xvdh | cut -d \" -f 2) ; echo "UUID=$ID  /data  xfs  defaults,nofail  0  2" | sudo tee -a /etc/fstab
 
-  # - name: Reload systemd manager configuration
-  #   shell: systemctl daemon-reload
+  - name: Reload systemd manager configuration
+    shell: systemctl daemon-reload
   
-  # - name: Unmount /data
-  #   shell: umount /data
+  - name: Unmount /data
+    shell: umount /data
   
-  # - name: Mount command
-  #   shell: mount -a
+  - name: Mount command
+    shell: mount -a
 
-  # - name: Change permissions of data directory
-  #   file:
-  #     path: /data
-  #     mode: 0777
+  - name: Change permissions of data directory
+    file:
+      path: /data
+      mode: 0777
   
 
-  # # Step 3: Download and install TigerGraph on the cluster
+  # Step 3: Download and install TigerGraph on the cluster
 
-  # - name: make /data/tigergraph directory
-  #   file:
-  #     path: /data/tigergraph
-  #     state: directory
+  - name: make /data/tigergraph directory
+    file:
+      path: /data/tigergraph
+      state: directory
   
-  # # - name: Download tigergraph locally
-  # #   shell: wget -O tigergraph-3.1.6-offline.tar.gz https://dl.tigergraph.com/enterprise-edition/tigergraph-3.1.6-offline.tar.gz?
-  # #   connection: local
-  # #   become: false
-  # #   run_once: true
-  # #   delegate_to: 127.0.0.1
+  - name: Download tigergraph locally
+    shell: wget -O tigergraph-3.1.6-offline.tar.gz https://dl.tigergraph.com/enterprise-edition/tigergraph-3.1.6-offline.tar.gz?
+    connection: local
+    become: false
+    run_once: true
+    delegate_to: 127.0.0.1
   
-  # - name: Copy tigergraph to each instance
-  #   copy:
-  #     src: ./tigergraph-3.1.6-offline.tar.gz
-  #     dest: /data/tigergraph-3.1.6-offline.tar.gz
+  - name: Copy tigergraph to each instance
+    copy:
+      src: ./tigergraph-3.1.6-offline.tar.gz
+      dest: /data/tigergraph-3.1.6-offline.tar.gz
     
-  # - name: Extract tigergraph
-  #   unarchive:
-  #     src: /data/tigergraph-3.1.6-offline.tar.gz
-  #     dest: /data/
-  #     remote_src: yes
-    # shell: 
-    #   cmd: tar -xvf tigergraph-3.1.6-offline.tar.gz
-    #   chdir: /data/
+  - name: Extract tigergraph
+    unarchive:
+      src: /data/tigergraph-3.1.6-offline.tar.gz
+      dest: /data/
+      remote_src: yes
 
-  # - name: Copy update_config.sh file to each instance
-  #   copy:
-  #     src: ./update_config.sh
-  #     dest: /data/tigergraph-3.1.6-offline/update_config.sh
+  - name: Copy update_config.sh file to each instance
+    copy:
+      src: ./update_config.sh
+      dest: /data/tigergraph-3.1.6-offline/update_config.sh
 
-  # - name: Install aws
-  #   shell: snap install aws-cli --classic
+  - name: Install aws
+    shell: snap install aws-cli --classic
 
-  # - name: Copy ssh key file to /data/tigergraph
-  #   copy:
-  #     src: "{{key_file_path}}"
-  #     dest: /data/tigergraph/
+  - name: Copy ssh key file to /data/tigergraph
+    copy:
+      src: "{{key_file_path}}"
+      dest: /data/tigergraph/
 
-  # - name: Update root dirs,ips, key file, relicas
-  #   shell: 
-  #     cmd: chmod u+x update_config.sh; ./update_config.sh
-  #     chdir: /data/tigergraph-3.1.6-offline/
+  - name: Change permissions of key file
+    file:
+      path: "/data/tigergraph/{{key_file_name}}"
+      mode: 0600
 
-  # - name: Sleep for 5secs
-  #   shell:
-  #     cmd: sleep 10
+  - name: Update root dirs,ips, key file, relicas
+    shell: 
+      cmd: chmod u+x update_config.sh; ./update_config.sh
+      chdir: /data/tigergraph-3.1.6-offline/
+
+  - name: Sleep for 5secs
+    shell:
+      cmd: sleep 10
 
   - name: Install tigergraph
     shell: 
