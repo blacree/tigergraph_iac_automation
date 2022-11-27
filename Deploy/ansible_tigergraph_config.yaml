@@ -82,7 +82,7 @@
 
   - name: Copy ssh key file to /data/tigergraph
     copy:
-      src: {{key_file_path}}
+      src: "{{key_file_path}}"
       dest: /data/tigergraph/
 
   - name: Update root dirs,ips, key file, relicas
