@@ -13,6 +13,11 @@
   - name: Update repository
     apt: update-cache=yes
 
+  - name: make /data directory
+    file:
+      path: /data
+      state: directory
+
   - name: save values in $ID and Echo info into fstab
     shell: ID=$(sudo blkid | grep xvdh | cut -d \" -f 2) ; echo "UUID=$ID  /data  xfs  defaults,nofail  0  2" | sudo tee -a /etc/fstab
 
