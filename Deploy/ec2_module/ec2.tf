@@ -21,9 +21,9 @@ resource "aws_instance" "instance_1" {
     instance_type = var.instance_type
     # associate_public_ip_address = true
 
-    ebs_block_device {
-        delete_on_termination = false
-    }
+    # ebs_block_device {
+    #     delete_on_termination = false
+    # }
 
     tags = {
       "${var.instance_tag_name}" = "${var.instance_tag_value}"
