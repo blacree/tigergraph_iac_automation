@@ -86,7 +86,7 @@
   - name: Install tigergraph
     shell: 
       # cmd: /data/tigergraph-3.1.6-offline/install.sh -n
-      cmd: install.sh -n
+      cmd: ./install.sh -n
       chdir: /data/tigergraph-3.1.6-offline/
 
   - name: Run gsql command as tigergraph
