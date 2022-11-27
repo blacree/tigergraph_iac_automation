@@ -66,7 +66,7 @@
     
   - name: Extract tigergraph
     unarchive:
-      src: /data/tigergraph-3.1.6-offline.tar.gz
+      remote_src: /data/tigergraph-3.1.6-offline.tar.gz
       dest: /data/
     # shell: 
     #   cmd: tar -xvf tigergraph-3.1.6-offline.tar.gz
