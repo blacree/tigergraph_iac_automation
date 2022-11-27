@@ -14,7 +14,7 @@
     apt: update-cache=yes
 
   - name: Make file system
-    shell: mkfs -t ext4 /dev/sdm
+    shell: mkfs -t ext4 /dev/xvdm
 
   - name: make /data directory
     file:
@@ -22,10 +22,10 @@
       state: directory
 
   - name: Mount filesystem to /data path
-    shell: mount /dev/sdm /data
+    shell: mount /dev/xvdm /data
   
   - name: Save values in $id and Echo info into fstab
-    shell: ID=$(sudo blkid | grep sdm | cut -d \" -f 2) ; echo "UUID=$ID  /data  xfs  defaults,nofail  0  2" | sudo tee -a /etc/fstab
+    shell: ID=$(sudo blkid | grep xvdm | cut -d \" -f 2) ; echo "UUID=$ID  /data  xfs  defaults,nofail  0  2" | sudo tee -a /etc/fstab
 
   - name: Reload systemd manager configuration
     shell: systemctl daemon-reload
