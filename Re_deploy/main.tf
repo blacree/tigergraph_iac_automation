@@ -22,7 +22,6 @@ locals {
     security_group_id = "sg-0d38798cdf31d2df3"
     key_name = "blacree"
     instance_type = "t2.micro"
-    instance_tag_name = "Name"
     instance_tag_value = "Testing"
 
     private_ip_1 = "172.31.19.111"
@@ -36,7 +35,8 @@ locals {
     ebs_volume_id_3 = ""
 
     # Path to private ssh key used for the instances (locally)
-    ssh_key_file_path = "/home/ubuntu/blacree"
+    # ssh_key_file_path = "/home/ubuntu/blacree"
+    ssh_key_file_path = "/root/keypair/blacree"
 
     # Username used by the instance
     instance_username = "ubuntu"
@@ -54,7 +54,6 @@ module "ec2_module" {
     security_group_id = local.security_group_id
     key_name = local.key_name
     instance_type = local.instance_type
-    instance_tag_name = local.instance_tag_name
     instance_tag_value = local.instance_tag_value
 
     private_ip_1 = local.private_ip_1
@@ -93,9 +92,10 @@ resource "null_resource" "specific_configuration"{
     }
 
     # Start main config
-    # provisioner "local-exec" {
-    #     command = "ansible-playbook -i ${local.private_ip_1},${local.private_ip_2},${local.private_ip_3} ${local.ansible_main_file}"
-    # }
+    provisioner "local-exec" {
+        # command = "ansible-playbook -i ${local.private_ip_1},${local.private_ip_2},${local.private_ip_3} ${local.ansible_main_file}"
+        command = "ansible-playbook -i ${local.private_ip_1}, ${local.ansible_main_file}"
+    }
 
     depends_on = [
       module.ec2_module

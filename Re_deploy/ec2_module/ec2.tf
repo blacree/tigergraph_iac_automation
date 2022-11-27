@@ -4,7 +4,6 @@ variable image_id {}
 variable security_group_id {}
 variable key_name {}
 variable instance_type {}
-variable instance_tag_name {}
 variable instance_tag_value {}
 
 variable "private_ip_1" {}
@@ -23,7 +22,7 @@ resource "aws_instance" "instance_1" {
     private_ip = var.private_ip_1
 
     tags = {
-      "${var.instance_tag_name}" = "${var.instance_tag_value}"
+      "Name" = "${var.instance_tag_value}"
     }
 }
 
@@ -37,7 +36,7 @@ resource "aws_instance" "instance_1" {
 #     # associate_public_ip_address = true
 
 #     tags = {
-#       "${var.instance_tag_name}" = "${var.instance_tag_value}"
+#       "Name" = "${var.instance_tag_value}"
 #     }
 # }
 
@@ -51,7 +50,7 @@ resource "aws_instance" "instance_1" {
 #     # associate_public_ip_address = true
 
 #     tags = {
-#       "${var.instance_tag_name}" = "${var.instance_tag_value}"
+#       "Name" = "${var.instance_tag_value}"
 #     }
 # }
 
