@@ -9,7 +9,7 @@ variable ebs_volume_id_1 {}
 
 # Attach instance 1 to volume 1
 resource "aws_volume_attachment" "ebs_attachment_1" {
-    device_name = "/dev/sdb"
+    device_name = "/dev/sdm"
     volume_id = var.ebs_volume_id_1
     instance_id = var.instance_1_id
 }
