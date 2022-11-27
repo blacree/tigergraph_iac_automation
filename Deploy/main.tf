@@ -52,23 +52,23 @@ module "ebs_create_module"{
 }
 
 
-module "ec2_module" {
-    source = "./ec2_module"
-    subnet_id = local.subnet_id
-    image_id = local.image_id
-    security_group_id = local.security_group_id
-    key_name = local.key_name
-    instance_type = local.instance_type
-    instance_tag_name = local.instance_tag_name
-    instance_tag_value = local.instance_tag_value
-    ebs_snapshot_id_1 = module.ebs_create_module.ebs_snapshot_id_1
-    # ebs_snapshot_id_2 = module.ebs_create_module.ebs_snapshot_id_2
-    # ebs_snapshot_id_3 = module.ebs_create_module.ebs_snapshot_id_3
+# module "ec2_module" {
+#     source = "./ec2_module"
+#     subnet_id = local.subnet_id
+#     image_id = local.image_id
+#     security_group_id = local.security_group_id
+#     key_name = local.key_name
+#     instance_type = local.instance_type
+#     instance_tag_name = local.instance_tag_name
+#     instance_tag_value = local.instance_tag_value
+#     ebs_snapshot_id_1 = module.ebs_create_module.ebs_snapshot_id_1
+#     # ebs_snapshot_id_2 = module.ebs_create_module.ebs_snapshot_id_2
+#     # ebs_snapshot_id_3 = module.ebs_create_module.ebs_snapshot_id_3
 
-    depends_on = [
-      module.ebs_create_module
-    ]
-}
+#     depends_on = [
+#       module.ebs_create_module
+#     ]
+# }
 
 # module "ebs_attach_module"{
 #     source = "./ebs_attach_volume_module"
@@ -81,36 +81,36 @@ module "ec2_module" {
 # }
 
 
-resource "null_resource" "specific_configuration"{
+# resource "null_resource" "specific_configuration"{
 
-    # Confirm that ssh is ready on last machine created. It is ready on the first 2 machines if it is ready on the last machine created.
-    provisioner "remote-exec" {
-    inline = [
-        "echo ssh is now available"
-    ]
+#     # Confirm that ssh is ready on last machine created. It is ready on the first 2 machines if it is ready on the last machine created.
+#     provisioner "remote-exec" {
+#     inline = [
+#         "echo ssh is now available"
+#     ]
 
-    connection {
-        type = "ssh"
-        user = local.instance_username
-        host = module.ec2_module.private_ip_1
-        # host = module.ec2_module.private_ip_3
-        private_key = file(local.ssh_key_file_path)
-        }
-    }
+#     connection {
+#         type = "ssh"
+#         user = local.instance_username
+#         host = module.ec2_module.private_ip_1
+#         # host = module.ec2_module.private_ip_3
+#         private_key = file(local.ssh_key_file_path)
+#         }
+#     }
 
-    # Start main config
-    # provisioner "local-exec" {
-    #     command = "ansible-playbook -i ${module.ec2_module.private_ip_1},${module.ec2_module.private_ip_2},${module.ec2_module.private_ip_3} ${local.ansible_main_file}"
-    # }
+#     # Start main config
+#     # provisioner "local-exec" {
+#     #     command = "ansible-playbook -i ${module.ec2_module.private_ip_1},${module.ec2_module.private_ip_2},${module.ec2_module.private_ip_3} ${local.ansible_main_file}"
+#     # }
 
-    depends_on = [
-      module.ec2_module
-    ]
-}
+#     depends_on = [
+#       module.ec2_module
+#     ]
+# }
 
-output "instance_1_private_ip"{
-    value = "Private IP_1: ${module.ec2_module.private_ip_1}"
-}
+# output "instance_1_private_ip"{
+#     value = "Private IP_1: ${module.ec2_module.private_ip_1}"
+# }
 
 # output "instance_2_private_ip"{
 #     value = "Private IP_2: ${module.ec2_module.private_ip_2}"

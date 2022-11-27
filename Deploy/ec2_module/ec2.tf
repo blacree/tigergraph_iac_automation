@@ -22,7 +22,7 @@ resource "aws_instance" "instance_1" {
     # associate_public_ip_address = true
 
     ebs_block_device {
-        device_name = "/dev/sdb"
+        device_name = "/dev/sdh"
         delete_on_termination = false
         snapshot_id = var.ebs_snapshot_id_1
     }
@@ -32,7 +32,7 @@ resource "aws_instance" "instance_1" {
     }
 }
 
-# Second instance
+# # Second instance
 # resource "aws_instance" "instance_2" {
 #     ami = var.image_id
 #     subnet_id = var.subnet_id
@@ -40,6 +40,12 @@ resource "aws_instance" "instance_1" {
 #     key_name = var.key_name
 #     instance_type = var.instance_type
 #     # associate_public_ip_address = true
+
+#     ebs_block_device {
+#         device_name = "/dev/sdh"
+#         delete_on_termination = false
+#         snapshot_id = var.ebs_snapshot_id_2
+#     }
 
 #     tags = {
 #       "${var.instance_tag_name}" = "${var.instance_tag_value}"
@@ -54,6 +60,12 @@ resource "aws_instance" "instance_1" {
 #     key_name = var.key_name
 #     instance_type = var.instance_type
 #     # associate_public_ip_address = true
+
+#     ebs_block_device {
+#         device_name = "/dev/sdh"
+#         delete_on_termination = false
+#         snapshot_id = var.ebs_snapshot_id_3
+#     }
 
 #     tags = {
 #       "${var.instance_tag_name}" = "${var.instance_tag_value}"
