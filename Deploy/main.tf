@@ -27,13 +27,14 @@ locals {
 
 
     # vars for ebs_volumes
-    size = 8
+    size = 14
     availability_zone = "us-east-1b"
     volume_tag_name = "Name"
     volume_tag_value = "Testing"
 
     # Path to private ssh key used for the instances (locally)
-    ssh_key_file_path = "/home/ubuntu/blacree"
+    # ssh_key_file_path = "/home/ubuntu/blacree"
+    ssh_key_file_path = "/root/keypair/blacree"
 
     # Username used by the instance
     instance_username = "ubuntu"

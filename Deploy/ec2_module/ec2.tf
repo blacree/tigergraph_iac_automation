@@ -21,11 +21,11 @@ resource "aws_instance" "instance_1" {
     instance_type = var.instance_type
     # associate_public_ip_address = true
 
-    # ebs_block_device {
-    #     device_name = "/dev/sdh"
-    #     delete_on_termination = false
-    #     snapshot_id = var.ebs_snapshot_id_1
-    # }
+    ebs_block_device {
+        device_name = "/dev/sdh"
+        delete_on_termination = false
+        volume_size = 14
+    }
 
     tags = {
       "${var.instance_tag_name}" = "${var.instance_tag_value}"

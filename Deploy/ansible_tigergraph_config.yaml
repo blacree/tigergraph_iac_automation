@@ -24,11 +24,8 @@
   - name: Mount filesystem to /data path
     shell: mount /dev/xvdf /data
   
-  - name: save values in $id
-    shell: ID=$(sudo blkid | grep xvdf | cut -d \" -f 2)
-
-  - name: Echo info into fstab
-    shell: echo "UUID=$ID  /data  xfs  defaults,nofail  0  2" | sudo tee -a /etc/fstab
+  - name: Save values in $id and Echo info into fstab
+    shell: ID=$(sudo blkid | grep xvdf | cut -d \" -f 2) ; echo "UUID=$ID  /data  xfs  defaults,nofail  0  2" | sudo tee -a /etc/fstab
 
   - name: Reload systemd manager configuration
     shell: systemctl daemon-reload
@@ -50,12 +47,12 @@
       path: /data/tigergraph
       state: directory
   
-  - name: Download tigergraph locally
-    shell: wget -O tigergraph-3.1.6-offline.tar.gz https://dl.tigergraph.com/enterprise-edition/tigergraph-3.1.6-offline.tar.gz?
-    connection: local
-    become: false
-    run_once: true
-    delegate_to: 127.0.0.1
+  # - name: Download tigergraph locally
+  #   shell: wget -O tigergraph-3.1.6-offline.tar.gz https://dl.tigergraph.com/enterprise-edition/tigergraph-3.1.6-offline.tar.gz?
+  #   connection: local
+  #   become: false
+  #   run_once: true
+  #   delegate_to: 127.0.0.1
   
   - name: Copy tigergraph to each instance
     copy:
