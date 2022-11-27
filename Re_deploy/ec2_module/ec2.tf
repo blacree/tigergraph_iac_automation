@@ -19,7 +19,7 @@ resource "aws_instance" "instance_1" {
     security_groups = [var.security_group_id]
     key_name = var.key_name
     instance_type = var.instance_type
-    # associate_public_ip_address = true
+    associate_public_ip_address = true
     private_ip = var.private_ip_1
 
     tags = {
