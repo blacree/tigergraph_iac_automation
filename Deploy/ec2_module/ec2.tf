@@ -22,9 +22,7 @@ resource "aws_instance" "instance_1" {
     # associate_public_ip_address = true
 
     ebs_block_device {
-        device_name = "/dev/sdh"
         delete_on_termination = false
-        volume_size = 14
     }
 
     tags = {
