@@ -29,27 +29,33 @@
     user:
       name: tigergraph
       groups: sudo
-      home: /home/vibes
+      home: /home/tigergraph
       shell: /bin/bash
       createhome: yes
 
-  - name: copy /data/backup/.ssh and /data/backup/.tg.cfg
-    become: yes
-    become_user: tigergraph
-    become_method: sudo
-    shell: cp -pr /data/backup/.ssh /home/tigergraph/ ; cp -p /data/backup/.tg.cfg /home/tigergraph/
+  # - name: copy /data/backup/.ssh and /data/backup/.tg.cfg
+  #   become: yes
+  #   become_user: tigergraph
+  #   become_method: sudo
+  #   shell: cp -pr /data/backup/.ssh /home/tigergraph/ ; cp -p /data/backup/.tg.cfg /home/tigergraph/
   
-  - name: copy /data/backup/.bashrc and /data/backup/98-tigergraph.conf
-    become: yes
-    become_user: tigergraph
-    become_method: sudo
-    shell: cp -p /data/backup/.bashrc /home/tigergraph/ ; cp -p /data/backup/98-tigergraph.conf /etc/security/limits.d/
+  # - name: copy /data/backup/.bashrc and /data/backup/98-tigergraph.conf
+  #   become: yes
+  #   become_user: tigergraph
+  #   become_method: sudo
+  #   shell: cp -p /data/backup/.bashrc /home/tigergraph/ ; cp -p /data/backup/98-tigergraph.conf /etc/security/limits.d/
     
 
   # Step 9: Start TigerGraph services 
+
+  # - name: Run gadmin command as tigergraph user
+  #   become: yes
+  #   become_user: tigergraph
+  #   become_method: sudo
+  #   shell: gadmin start all
 
   - name: Run gadmin command as tigergraph user
     become: yes
     become_user: tigergraph
     become_method: sudo
-    shell: gadmin start all
+    shell: whoami
