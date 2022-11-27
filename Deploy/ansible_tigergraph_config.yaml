@@ -10,72 +10,82 @@
 
   # Step 2:  Mount the volume on each node
 
-  - name: Update repository
-    apt: update-cache=yes
+  # - name: Update repository
+  #   apt: update-cache=yes
 
-  - name: Make file system
-    shell: mkfs -t xfs /dev/xvdh
+  # - name: Make file system
+  #   shell: mkfs -t xfs /dev/xvdh
 
-  - name: make /data directory
-    file:
-      path: /data
-      state: directory
+  # - name: make /data directory
+  #   file:
+  #     path: /data
+  #     state: directory
 
-  - name: Mount filesystem to /data path
-    shell: mount /dev/xvdh /data
+  # - name: Mount filesystem to /data path
+  #   shell: mount /dev/xvdh /data
   
-  - name: Save values in $id and Echo info into fstab
-    shell: ID=$(sudo blkid | grep xvdh | cut -d \" -f 2) ; echo "UUID=$ID  /data  xfs  defaults,nofail  0  2" | sudo tee -a /etc/fstab
+  # - name: Save values in $id and Echo info into fstab
+  #   shell: ID=$(sudo blkid | grep xvdh | cut -d \" -f 2) ; echo "UUID=$ID  /data  xfs  defaults,nofail  0  2" | sudo tee -a /etc/fstab
 
-  - name: Reload systemd manager configuration
-    shell: systemctl daemon-reload
+  # - name: Reload systemd manager configuration
+  #   shell: systemctl daemon-reload
   
-  - name: Unmount /data
-    shell: umount /data
+  # - name: Unmount /data
+  #   shell: umount /data
   
-  - name: Mount command
-    shell: mount -a
+  # - name: Mount command
+  #   shell: mount -a
 
-  - name: Change permissions
-    shell: chmod 777 /data
+  # - name: Change permissions of data directory
+  #   file:
+  #     path: /data
+  #     mode: 0777
   
 
-  # Step 3: Download and install TigerGraph on the cluster
+  # # Step 3: Download and install TigerGraph on the cluster
 
-  - name: make /data/tigergraph directory
-    file:
-      path: /data/tigergraph
-      state: directory
+  # - name: make /data/tigergraph directory
+  #   file:
+  #     path: /data/tigergraph
+  #     state: directory
   
-  # - name: Download tigergraph locally
-  #   shell: wget -O tigergraph-3.1.6-offline.tar.gz https://dl.tigergraph.com/enterprise-edition/tigergraph-3.1.6-offline.tar.gz?
-  #   connection: local
-  #   become: false
-  #   run_once: true
-  #   delegate_to: 127.0.0.1
+  # # - name: Download tigergraph locally
+  # #   shell: wget -O tigergraph-3.1.6-offline.tar.gz https://dl.tigergraph.com/enterprise-edition/tigergraph-3.1.6-offline.tar.gz?
+  # #   connection: local
+  # #   become: false
+  # #   run_once: true
+  # #   delegate_to: 127.0.0.1
   
-  - name: Copy tigergraph to each instance
-    copy:
-      src: ./tigergraph-3.1.6-offline.tar.gz
-      dest: /data/tigergraph-3.1.6-offline.tar.gz
+  # - name: Copy tigergraph to each instance
+  #   copy:
+  #     src: ./tigergraph-3.1.6-offline.tar.gz
+  #     dest: /data/tigergraph-3.1.6-offline.tar.gz
     
-  - name: Extract tigergraph
-    shell: 
-      cmd: tar -xvf tigergraph-3.1.6-offline.tar.gz
-      chdir: /data/
+  # - name: Extract tigergraph
+  #   unarchive:
+  #     src: /data/tigergraph-3.1.6-offline.tar.gz
+  #     dest: /data/
+  #   # shell: 
+  #   #   cmd: tar -xvf tigergraph-3.1.6-offline.tar.gz
+  #   #   chdir: /data/
 
-  - name: Copy update_config.sh file to each instance
-    copy:
-      src: ./update_config.sh
-      dest: /data/tigergraph-3.1.6-offline/update_config.sh
+  # - name: Copy update_config.sh file to each instance
+  #   copy:
+  #     src: ./update_config.sh
+  #     dest: /data/tigergraph-3.1.6-offline/update_config.sh
 
-  - name: Update root dirs,ips, key file, relicas
-    shell: 
-      cmd: chmod u+x update_config.sh; ./update_config.sh
-      chdir: /data/tigergraph-3.1.6-offline/
+  # - name: Update root dirs,ips, key file, relicas
+  #   shell: 
+  #     cmd: chmod u+x update_config.sh; ./update_config.sh
+  #     chdir: /data/tigergraph-3.1.6-offline/
+
+  # - name: Sleep for 5secs
+  #   shell:
+  #     cmd: sleep 10
 
   - name: Install tigergraph
     shell: 
+      # cmd: /data/tigergraph-3.1.6-offline/install.sh -n
       cmd: install.sh -n
       chdir: /data/tigergraph-3.1.6-offline/
 
