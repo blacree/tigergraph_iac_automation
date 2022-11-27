@@ -127,3 +127,19 @@ output "ebs_volume_id_1"{
 output "ebs_snapshot_id_1"{
     value = module.ebs_create_module.ebs_snapshot_id_1
 }
+
+# output "ebs_volume_id_2"{
+#     value = module.ebs_create_module.ebs_volume_id_2
+# }
+
+# output "ebs_snapshot_id_2"{
+#     value = module.ebs_create_module.ebs_snapshot_id_2
+# }
+
+# output "ebs_volume_id_3"{
+#     value = module.ebs_create_module.ebs_volume_id_3
+# }
+
+# output "ebs_snapshot_id_3"{
+#     value = module.ebs_create_module.ebs_snapshot_id_3
+# }
