@@ -60,8 +60,9 @@
       dest: /data/tigergraph-3.1.6-offline.tar.gz
     
   - name: Extract tigergraph
-    shell: tar -xvf tigergraph-3.1.6-offline.tar.gz
-    chdir: /data/
+    shell: 
+      cmd: tar -xvf tigergraph-3.1.6-offline.tar.gz
+      chdir: /data/
 
   - name: Copy update_config.sh file to each instance
     copy:
@@ -69,12 +70,14 @@
       dest: /data/tigergraph-3.1.6-offline/update_config.sh
 
   - name: Update root dirs,ips, key file, relicas
-    shell: chmod u+x update_config.sh; ./update_config.sh
-    chdir: /data/tigergraph-3.1.6-offline/
+    shell: 
+      cmd: chmod u+x update_config.sh; ./update_config.sh
+      chdir: /data/tigergraph-3.1.6-offline/
 
   - name: Install tigergraph
-    shell: install.sh -n
-    chdir: /data/tigergraph-3.1.6-offline/
+    shell: 
+      cmd: install.sh -n
+      chdir: /data/tigergraph-3.1.6-offline/
 
   - name: Run gsql command as tigergraph
     become: yes
