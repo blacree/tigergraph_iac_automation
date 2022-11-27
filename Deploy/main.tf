@@ -33,8 +33,8 @@ locals {
     volume_tag_value = "Testing"
 
     # Path to private ssh key used for the instances (locally)
-    # ssh_key_file_path = "/home/ubuntu/blacree"
-    ssh_key_file_path = "/root/keypair/blacree"
+    ssh_key_file_path = "/home/ubuntu/blacree"
+    # ssh_key_file_path = "/root/keypair/blacree"
 
     # Username used by the instance
     instance_username = "ubuntu"
@@ -100,9 +100,10 @@ resource "null_resource" "specific_configuration"{
     }
 
     # Start main config
-    # provisioner "local-exec" {
-    #     command = "ansible-playbook -i ${module.ec2_module.private_ip_1},${module.ec2_module.private_ip_2},${module.ec2_module.private_ip_3} ${local.ansible_main_file}"
-    # }
+    provisioner "local-exec" {
+        # command = "ansible-playbook -i ${module.ec2_module.private_ip_1},${module.ec2_module.private_ip_2},${module.ec2_module.private_ip_3} ${local.ansible_main_file}"
+        command = "ansible-playbook -i ${module.ec2_module.private_ip_1}, ${local.ansible_main_file}"
+    }
 
     depends_on = [
       module.ec2_module
