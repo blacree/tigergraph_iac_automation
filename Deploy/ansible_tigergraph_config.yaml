@@ -76,8 +76,8 @@
       src: ./update_config.sh
       dest: /data/tigergraph-3.1.6-offline/update_config.sh
 
-  - name: Install aws
-    shell: snap install aws-cli --classic
+  # - name: Install aws
+  #   shell: snap install aws-cli --classic
 
   - name: Copy ssh key file to /data/tigergraph
     copy:
@@ -96,7 +96,7 @@
 
   - name: Sleep for 5secs
     shell:
-      cmd: sleep 10
+      cmd: sleep 5
 
   - name: Install tigergraph
     shell: 
@@ -132,20 +132,20 @@
 
   # Step 5: Remove GPE_1_3 from ZooKeeper and stop GPE_1#3
 
-  - name: Export $JAVA_HOME
-    shell: export JAVA_HOME=$(dirname $(find $(gadmin config get System.AppRoot)/.syspre -name java))
+  - name: Copy gpe_config.sh to home directory
+    copy:
+      src: ./gpe_config.sh
+      dest: /home/
 
-  - name: Add to $PATH
-    shell: export PATH=$PATH:$JAVA_HOME
-  
-  - name: gadmin config_1
-    shell: $(gadmin config get System.AppRoot)/zk/bin/zkCli.sh -server 127.0.0.1:19999 ls /tigergraph/dict/objects/__services/GPE/_runtime_nodes | tail -1
+  - name: Give gpe_config.sh executive permissions
+    file:
+      path: /home/gpe_config.sh
+      mode: 0760
 
-  - name: gadmin_config_2
-    shell: $(gadmin config get System.AppRoot)/zk/bin/zkCli.sh -server 127.0.0.1:19999 deleteall /tigergraph/dict/objects/__services/GPE/_runtime_nodes/GPE_1_3
-  
-  - name: gadmin_config 3
-    shell: gadmin stop GPE_1#3 -y
+  - name: Run gpe_config.sh
+    shell:
+      cmd: ./gpe_config.sh
+      chdir: /home
 
 
 
