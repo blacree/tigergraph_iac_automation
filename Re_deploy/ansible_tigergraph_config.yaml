@@ -44,7 +44,7 @@
     shell: whoami
     
 
-  Step 9: Start TigerGraph services 
+  # Step 9: Start TigerGraph services 
 
   - name: Run gadmin command as tigergraph user
     become: yes
