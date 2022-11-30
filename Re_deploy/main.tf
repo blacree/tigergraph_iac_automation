@@ -24,7 +24,7 @@ locals {
     instance_type = "t2.micro"
     instance_tag_value = "Testing"
 
-    private_ip_1 = "172.31.26.32"
+    private_ip_1 = "172.31.26.41"
     # private_ip_2 = ""
     # private_ip_3 = ""
 
