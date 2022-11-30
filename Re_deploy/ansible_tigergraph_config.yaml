@@ -1,7 +1,7 @@
 - name: Tigergraph Configuration - Redeploy
   hosts: all
   gather_facts: false
-  remote_user: ec2-user
+  remote_user: ubuntu
   become: true
 
   # Steps @ https://tigergraph.freshdesk.com/support/solutions/articles/5000870673-node-replacement-on-ec2-instances-with-0-downtime
