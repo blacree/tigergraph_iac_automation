@@ -43,6 +43,9 @@ For a Bitnami AMI, the user name is bitnami.
 - Locations to configure name of key file:
 	i. Deploy/ansible_tigergraph_config.yaml - "key_file_name" variable
 
+3. Configure the value used for your "instance_tag_value" variable (in main.tf) in Deploy/update.config.sh file
+	- DATA looks like: secondary_host_ips="$(aws ec2 describe-instances --filters "Name=tag:Name,Values=<instance_tag_value>" --query 'Reservations[*].Instances[*].[PrivateIpAddress]' --output text) "
+
 
 ***VERY IMPORTANT VERY IMPORTANT VERY IMPORTANT VERY IMPORTANT VERY IMPORTANT***
 HOW TO DESTROY IAC FOR 'DEPLOY' - ONLY APPLIES TO DEPLOY:
@@ -54,6 +57,9 @@ it will get destroyed with everything else and you will loose all your data.
 	ii. Copy and remove each ebs_volume:
 		$ terraform state rm module.ebs_module.aws_ebs_volume.<name>
 You can then go ahead to destroy your infrastructure using "terraform destroy"
+
+
+NOTE: The subnet_id used for your instances must be in the same availability_zone used for your ebs_volumes
 
 
 
