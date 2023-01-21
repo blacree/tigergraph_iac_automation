@@ -36,12 +36,10 @@
       createhome: yes
 
   - name: copy /data/backup/.ssh and /data/backup/.tg.cfg
-    # shell: cp -pr /data/backup/.ssh /home/tigergraph/ ; cp -p /data/backup/.tg.cfg /home/tigergraph/
-    shell: whoami
+    shell: cp -pr /data/backup/.ssh /home/tigergraph/ ; cp -p /data/backup/.tg.cfg /home/tigergraph/
   
   - name: copy /data/backup/.bashrc and /data/backup/98-tigergraph.conf
-    # shell: cp -p /data/backup/.bashrc /home/tigergraph/ ; cp -p /data/backup/98-tigergraph.conf /etc/security/limits.d/
-    shell: whoami
+    shell: cp -p /data/backup/.bashrc /home/tigergraph/ ; cp -p /data/backup/98-tigergraph.conf /etc/security/limits.d/
     
 
   # Step 9: Start TigerGraph services 
@@ -50,5 +48,4 @@
     become: yes
     become_user: tigergraph
     become_method: sudo
-    # shell: gadmin start all
-    shell: whoami
+    shell: gadmin start all
