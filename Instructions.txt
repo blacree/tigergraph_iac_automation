@@ -47,7 +47,7 @@ For a Bitnami AMI, the user name is bitnami.
 	- DATA looks like: secondary_host_ips="$(aws ec2 describe-instances --filters "Name=tag:Name,Values=<instance_tag_value>" --query 'Reservations[*].Instances[*].[PrivateIpAddress]' --output text) "
 
 
-***VERY IMPORTANT VERY IMPORTANT VERY IMPORTANT VERY IMPORTANT VERY IMPORTANT***
+***VERY IMPORTANT VERY IMPORTANT***
 HOW TO DESTROY IAC FOR 'DEPLOY' - ONLY APPLIES TO DEPLOY:
 Before destroying, Remove the state information for your ebs volumes from your terraform.tfstate file. If you don't remove the state information for you EBS volume 
 it will get destroyed with everything else and you will loose all your data.
